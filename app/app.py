@@ -24,6 +24,10 @@ def get_list_average(list_of_numbers):
     return total / len(list_of_numbers)
 
 
+def skip_one_line(file_iterator):
+    next(file_iterator)
+
+
 class SurveyResponse(object):
     email = ''
     employee_id = ''
@@ -67,42 +71,49 @@ class SurveyQuestion(object):
 
 
 class Survey(object):
-    survey_questions = []
-    survey_responses = []
+    questions = []
+    responses = []
     total_employees_surveyed = 0
     total_responses = 0
     participation_percentage = 0
+    total_number_of_questions = 0
 
     def __init__(self, survey_file_path, responses_file_path):
-        survey_file = get_csv_reader(survey_file_path)
-        for survey_row in survey_file:
-            self.survey_questions.append(SurveyQuestion(survey_row))
-        del self.survey_questions[0]
+        self.load_survey_questions_from_file(survey_file_path)
+        self.load_responses_from_file(responses_file_path)
+        self.calculate_participation()
+        self.calculate_all_average_ratings()
 
-        number_of_questions = len(self.survey_questions)
+    def load_survey_questions_from_file(self, survey_file_path):
+        survey_questions_file = get_csv_reader(survey_file_path)
+        skip_one_line(survey_questions_file)
+        for question_csv in survey_questions_file:
+            self.questions.append(SurveyQuestion(question_csv))
+
+        self.total_number_of_questions = len(self.questions)
+
+    def load_responses_from_file(self, responses_file_path):
 
         responses_file = get_csv_reader(responses_file_path)
 
         # Validate datatype issues too
-        for response_row in responses_file:
-            self.survey_responses.append(SurveyResponse(response_row, number_of_questions))
+        for individual_response_csv in responses_file:
+            individual_response = SurveyResponse(individual_response_csv, self.total_number_of_questions)
+            self.responses.append(individual_response)
 
-        self._calculate_participation()
-        self._calculate_all_average_ratings()
-
-    def _calculate_participation(self):
-        self.total_employees_surveyed = len(self.survey_responses)
+    def calculate_participation(self):
+        self.total_employees_surveyed = len(self.responses)
         self.total_responses = 0
-        for response in self.survey_responses:
+        for response in self.responses:
             if len(response.timestamp) > 0:
                 self.total_responses += 1
         self.participation_percentage = (100*self.total_responses)/self.total_employees_surveyed
 
-    def _calculate_all_average_ratings(self):
-        for question_number, question in enumerate(self.survey_questions):
+    def calculate_all_average_ratings(self):
+        for question_number, question in enumerate(self.questions):
             if question.type == SurveyQuestionType.RATING.value:
                 ratings_for_this_question = []
-                for individual_response in self.survey_responses:
+                for individual_response in self.responses:
                     answer = individual_response.get_answer(question_number)
                     answer_is_not_empty = len(answer) > 0
                     if answer_is_not_empty:
@@ -111,12 +122,12 @@ class Survey(object):
                 self.set_average_rating_for_question(question_number, average_rating)
 
     def set_average_rating_for_question(self, question_number, average_rating):
-        self.survey_questions[question_number].set_average_response(average_rating)
+        self.questions[question_number].set_average_response(average_rating)
 
     def print_average_question_ratings(self):
         output_table = Texttable()
         output_table.add_row(['Survey Question', 'Average Response'])
-        for question in self.survey_questions:
+        for question in self.questions:
             if question.type == SurveyQuestionType.RATING.value:
                 output_table.add_row([question.text, question.get_average_response()])
         print(output_table.draw())
