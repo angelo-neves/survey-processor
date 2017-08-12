@@ -1,6 +1,11 @@
 import sys
 import csv
 from texttable import Texttable
+from enum import Enum
+
+
+class SurveyQuestionType(Enum):
+    RATING = 'ratingquestion'
 
 
 def get_csv_reader(file_path):
@@ -87,7 +92,7 @@ class Survey(object):
     def _calculate_average_responses(self):
         for question_number, question in enumerate(self.survey_questions):
             question_ratings = []
-            if question.type == 'ratingquestion':
+            if question.type == SurveyQuestionType.RATING.value:
                 for response in self.survey_responses:
                     rating = response.responses[question_number]
                     if len(rating) > 0:
@@ -102,7 +107,7 @@ class Survey(object):
         output_table = Texttable()
         output_table.add_row(['Survey Question', 'Average Response'])
         for question in self.survey_questions:
-            if question.type == 'ratingquestion':
+            if question.type == SurveyQuestionType.RATING.value:
                 output_table.add_row([question.text, question.get_average_response()])
         print(output_table.draw())
 
@@ -111,16 +116,16 @@ class Survey(object):
         print('We received %.0f responses.' % self.total_responses)
         print('Participation was %.2f%%' % self.participation_percentage)
 
+if __name__ == "__main__":
+    two_parameters_given = len(sys.argv) == 3
 
-two_parameters_given = len(sys.argv) == 3
+    if not two_parameters_given:
+        sys.exit('You must inform 2 file paths')
 
-if not two_parameters_given:
-    sys.exit('You must inform 2 file paths')
+    surveyFilePath = sys.argv[1]
+    responseFilePath = sys.argv[2]
 
-surveyFilePath = sys.argv[1]
-responseFilePath = sys.argv[2]
-
-survey = Survey(surveyFilePath, responseFilePath)
-survey.print_participation_data()
-survey.print_average_question_ratings()
+    survey = Survey(surveyFilePath, responseFilePath)
+    survey.print_participation_data()
+    survey.print_average_question_ratings()
 
