@@ -34,8 +34,8 @@ class Response(object):
         number_of_answers_in_response_row = len(self.responses)
 
         if number_of_answers_in_response_row != number_of_questions_on_survey_file:
-            sys.exit('Model error: Expected '+str(number_of_questions_on_survey_file) +
-                     ' answer columns on response file but found '+str(number_of_answers_in_response_row))
+            sys.exit('Model error: Expected %.0f answer columns on response file but found %.0f' %
+                     (number_of_questions_on_survey_file, number_of_answers_in_response_row))
 
     def get_responses(self):
         return self.responses
@@ -75,6 +75,8 @@ class Survey(object):
         number_of_questions = len(self.survey_questions)
 
         responses_file = get_csv_reader(responses_file_path)
+        
+        # Validate datatype issues too
         for response_row in responses_file:
             self.survey_responses.append(Response(response_row, number_of_questions))
 
