@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+    parser:
+      build: .
+      working_dir: /app
+      command: python app.py ${SURVEY_FILE} ${RESPONSE_FILE}
+      volumes:
+        - ./files:/files
+        - ./app:/app
+      tty: true
+      stdin_open: true
