@@ -80,3 +80,4 @@ Enums have been used because in this project a string can represent a data type 
 I have created unit tests during development as needed,
 there is one test case for each of the main classes and one black box test that validates the full text output of a survey analysis
  just in case a bug is introduced that breaks the output without breaking other tests.
+ 
