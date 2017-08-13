@@ -4,24 +4,20 @@ from utils.utils import get_average_from_list
 
 
 class Survey(object):
-    questions = []
-    responses = []
-    total_employees_surveyed = 0
-    total_responses = 0
-    participation_percentage = 0
-    total_number_of_questions = 0
-
     def __init__(self, question_list, responses_list):
         self.questions = question_list
         self.total_number_of_questions = len(self.questions)
         self.responses = responses_list
+        self.total_employees_surveyed = len(self.responses)
+        self.total_responses = 0
+        self.participation_percentage = 0
 
         self._calculate_participation()
         self._calculate_all_average_ratings()
 
     def _calculate_participation(self):
-        self.total_employees_surveyed = len(self.responses)
         self.total_responses = 0
+        self.total_employees_surveyed = len(self.responses)
         for response in self.responses:
             if len(response.timestamp) > 0:
                 self.total_responses += 1

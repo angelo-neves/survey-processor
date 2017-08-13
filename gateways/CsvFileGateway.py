@@ -4,10 +4,10 @@ import sys
 
 
 class CsvFileGateway(object):
-    lines = []
 
     def __init__(self, file_path):
         self.lines = []
+
         if file_path[0] != '/':
             absolute_path = self._get_absolute_path(file_path)
         else:

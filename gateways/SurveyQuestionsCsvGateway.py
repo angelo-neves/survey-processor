@@ -3,9 +3,9 @@ from gateways.CsvFileGateway import CsvFileGateway
 
 
 class SurveyQuestionsCsvGateway(object):
-    questions = []
-
     def __init__(self, survey_file_path):
+        self.questions = []
+
         survey_questions_file = CsvFileGateway(survey_file_path)
         question_file_lines = survey_questions_file.get_all_lines()
 

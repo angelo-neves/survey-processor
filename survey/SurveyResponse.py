@@ -2,11 +2,6 @@ import sys
 
 
 class SurveyResponse(object):
-    email = ''
-    employee_id = ''
-    timestamp = ''
-    answers = []
-
     def __init__(self, response_row, number_of_questions_on_survey_file):
         self.answers = []
         self.email = response_row[0]
