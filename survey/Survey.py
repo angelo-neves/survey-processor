@@ -30,7 +30,7 @@ class Survey(object):
                 for individual_response in self.responses:
                     answer = individual_response.get_answer(question_number)
                     answer_is_not_empty = len(answer) > 0
-                    if answer_is_not_empty:
+                    if answer_is_not_empty and individual_response.is_submitted():
                         ratings_for_this_question.append(int(answer))
                 average_rating = get_average_from_list(ratings_for_this_question)
                 self._set_average_rating_for_question(question_number, average_rating)

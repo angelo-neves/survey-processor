@@ -1,7 +1,6 @@
 import csv
 import os
 import sys
-import itertools
 
 
 class CsvFileGateway(object):

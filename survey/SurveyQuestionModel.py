@@ -1,4 +1,4 @@
-class SurveyQuestion(object):
+class SurveyQuestionModel(object):
     def __init__(self, questions_dict):
         self.theme = questions_dict['theme']
         self.type = questions_dict['type']
