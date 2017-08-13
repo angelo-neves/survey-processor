@@ -2,8 +2,8 @@
 
 ## Running Instructions
 
-# Using Docker
+### Using Docker
 
-# Using local Python
+### Using local Python
 
 ## Design Decisions
