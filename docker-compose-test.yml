@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+    parser:
+      build: .
+      working_dir: /survey-processor
+      command: python -m unittest discover
+      volumes:
+        - ./:/survey-processor
+      tty: true
+      stdin_open: true
