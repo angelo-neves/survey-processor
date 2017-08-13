@@ -47,3 +47,30 @@ python -m unittest discover
 ```
 
 ## Design Decisions
+
+During the development of this application I have tried to implement an architecture that would be easy enough to maintain,
+test and expand while at the same time avoiding over-engineering.
+
+### Docker
+
+The decision to include docker was made early on to facilitate the execution of this app on any operating system,
+regardless of the version of python installed locally.
+
+### Gateways, Models, Factories and Enums
+
+Even though I haven’t followed any particular design approach,
+I have tried to use concepts that would make the code easier to read and to change.
+
+Gateways have been used to interact with the file in the operating system and deliver the contents of the CSV in a standard format,
+that way I can later add other sources of information and plug them right in, as long as every gateway uses the same output standard.
+
+Models have been created where needed to allow for a standard definition of the most important objects,
+even though they are not like a framework’s ORM they serve a similar purpose.
+
+Factories have been used to load data from the gateways and create instances of the adequate Models for use in the rest of the application.
+By isolating this routine it becomes more reliable and easy to test.
+
+Enums have been used because in this project a string can represent a data type and it’s important to reliably provide
+ a way to test if a given string represents a given data type.
+ If new types are introduced they will work even though they are not declared in the Enum,
+ it only becomes necessary to do that if you need to implement logic based on that new type of data.
