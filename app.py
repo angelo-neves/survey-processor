@@ -1,7 +1,7 @@
 import sys
 from survey.Survey import Survey
 from survey.SurveyQuestionFactory import SurveyQuestionFactory
-from gateways.SurveyResponsesCsvGateway import SurveyResponsesCsvGateway
+from survey.SurveyResponseFactory import SurveyResponseFactory
 from gateways.CsvFileGateway import CsvFileGateway
 
 if __name__ == "__main__":
@@ -17,8 +17,9 @@ if __name__ == "__main__":
     questions_factory = SurveyQuestionFactory(questions_file_gateway)
     question_list = questions_factory.get_question_list()
 
-    responses_gateway = SurveyResponsesCsvGateway(survey_responses_csv_path, len(question_list))
-    responses_list = responses_gateway.get_responses_list()
+    responses_file_gateway = CsvFileGateway(survey_responses_csv_path)
+    responses_factory = SurveyResponseFactory(responses_file_gateway, len(question_list))
+    responses_list = responses_factory.get_responses_list()
 
     survey = Survey(question_list, responses_list)
 
