@@ -1,16 +1,25 @@
 import sys
 from survey.Survey import Survey
+from gateways.SurveyQuestionsCsvGateway import SurveyQuestionsCsvGateway
+from gateways.SurveyResponsesCsvGateway import SurveyResponsesCsvGateway
 
 if __name__ == "__main__":
-    two_parameters_given = len(sys.argv) == 3
+    two_arguments_given = len(sys.argv) == 3
 
-    if not two_parameters_given:
-        sys.exit('You must inform 2 file paths')
+    if not two_arguments_given:
+        sys.exit('You must inform 2 arguments')
 
-    surveyFilePath = sys.argv[1]
-    responseFilePath = sys.argv[2]
+    survey_questions_csv_path = sys.argv[1]
+    survey_responses_csv_path = sys.argv[2]
 
-    survey = Survey(surveyFilePath, responseFilePath)
+    questions_gateway = SurveyQuestionsCsvGateway(survey_questions_csv_path)
+    question_list = questions_gateway.get_questions_list()
+
+    responses_gateway = SurveyResponsesCsvGateway(survey_responses_csv_path, len(question_list))
+    responses_list = responses_gateway.get_responses_list()
+
+    survey = Survey(question_list, responses_list)
+
     survey.print_participation_data()
     survey.print_average_question_ratings()
 

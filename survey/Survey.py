@@ -1,8 +1,6 @@
 from enums.SurveyQuestionType import SurveyQuestionType
 from texttable import Texttable
-from utils.utils import get_csv_reader, get_average_from_list, skip_one_line
-from survey.SurveyResponse import SurveyResponse
-from survey.SurveyQuestion import SurveyQuestion
+from utils.utils import get_average_from_list
 
 
 class Survey(object):
@@ -13,30 +11,15 @@ class Survey(object):
     participation_percentage = 0
     total_number_of_questions = 0
 
-    def __init__(self, survey_file_path, responses_file_path):
-        self.load_survey_questions_from_file(survey_file_path)
-        self.load_responses_from_file(responses_file_path)
-        self.calculate_participation()
-        self.calculate_all_average_ratings()
-
-    def load_survey_questions_from_file(self, survey_file_path):
-        survey_questions_file = get_csv_reader(survey_file_path)
-        skip_one_line(survey_questions_file)
-        for question_csv in survey_questions_file:
-            self.questions.append(SurveyQuestion(question_csv))
-
+    def __init__(self, question_list, responses_list):
+        self.questions = question_list
         self.total_number_of_questions = len(self.questions)
+        self.responses = responses_list
 
-    def load_responses_from_file(self, responses_file_path):
+        self._calculate_participation()
+        self._calculate_all_average_ratings()
 
-        responses_file = get_csv_reader(responses_file_path)
-
-        # Validate datatype issues too
-        for individual_response_csv in responses_file:
-            individual_response = SurveyResponse(individual_response_csv, self.total_number_of_questions)
-            self.responses.append(individual_response)
-
-    def calculate_participation(self):
+    def _calculate_participation(self):
         self.total_employees_surveyed = len(self.responses)
         self.total_responses = 0
         for response in self.responses:
@@ -44,7 +27,7 @@ class Survey(object):
                 self.total_responses += 1
         self.participation_percentage = (100*self.total_responses)/self.total_employees_surveyed
 
-    def calculate_all_average_ratings(self):
+    def _calculate_all_average_ratings(self):
         for question_number, question in enumerate(self.questions):
             if question.type == SurveyQuestionType.RATING.value:
                 ratings_for_this_question = []
@@ -54,9 +37,9 @@ class Survey(object):
                     if answer_is_not_empty:
                         ratings_for_this_question.append(int(answer))
                 average_rating = get_average_from_list(ratings_for_this_question)
-                self.set_average_rating_for_question(question_number, average_rating)
+                self._set_average_rating_for_question(question_number, average_rating)
 
-    def set_average_rating_for_question(self, question_number, average_rating):
+    def _set_average_rating_for_question(self, question_number, average_rating):
         self.questions[question_number].set_average_response(average_rating)
 
     def print_average_question_ratings(self):

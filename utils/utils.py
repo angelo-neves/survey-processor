@@ -1,21 +1,13 @@
-import sys
-import csv
-
-
-def get_csv_reader(file_path):
-    try:
-        csv_reader = csv.reader(open(file_path))
-    except (OSError, IOError):
-        sys.exit('File not found: ' + file_path)
-
-    return csv_reader
-
-
 def get_average_from_list(list_of_numbers):
-    total = 0
+    total_sum = 0
+    number_count = len(list_of_numbers)
+
+    if number_count == 0:
+        return total_sum
+
     for number in list_of_numbers:
-        total += number
-    return total / len(list_of_numbers)
+        total_sum += number
+    return total_sum / number_count
 
 
 def skip_one_line(file_iterator):
