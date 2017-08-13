@@ -3,7 +3,7 @@ class SurveyQuestionModel(object):
         self.theme = questions_dict['theme']
         self.type = questions_dict['type']
         self.text = questions_dict['text']
-        self.average_response = 0
+        self.average_response = ''
 
     def set_average_response(self, value):
         self.average_response = value

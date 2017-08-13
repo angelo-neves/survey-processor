@@ -35,7 +35,8 @@ class Survey(object):
                 self._set_average_rating_for_question(question_number, average_rating)
 
     def _set_average_rating_for_question(self, question_number, average_rating):
-        self.questions[question_number].set_average_response(average_rating)
+        rounded_average = '%.2f' % average_rating
+        self.questions[question_number].set_average_response(rounded_average)
 
     def get_all_questions(self):
         return self.questions
