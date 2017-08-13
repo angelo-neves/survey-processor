@@ -3,10 +3,9 @@ version: "3"
 services:
     parser:
       build: .
-      working_dir: /app
+      working_dir: /survey-processor
       command: python app.py ${SURVEY_FILE} ${RESPONSE_FILE}
       volumes:
-        - ./files:/files
-        - ./app:/app
+        - ./:/survey-processor
       tty: true
       stdin_open: true

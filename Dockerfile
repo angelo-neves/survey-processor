@@ -1,7 +1,7 @@
 FROM python:3.6.2
 
-ADD requirements.txt /
+ADD requirements.txt /survey-processor/
+WORKDIR /survey-processor
 RUN pip install -r requirements.txt
 
-ADD ./app /app
-WORKDIR /app
+ADD . /survey-processor
