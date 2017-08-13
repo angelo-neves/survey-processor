@@ -1,13 +1,19 @@
 import unittest
-from gateways.SurveyQuestionsCsvGateway import SurveyQuestionsCsvGateway
+from survey.SurveyQuestionFactory import SurveyQuestionFactory
+from test_mocks.CsvFileGateway import CsvFileGateway
 
 
 class TestsSurveyQuestionsCsvGateway(unittest.TestCase):
     def test_number_of_loaded_questions(self):
-        file_path = 'test_files/survey-1.csv'
+        raw_question_data = [
+            ['ratingquestion', 'The Work', 'I like the kind of work I do.'],
+            ['singleselect', 'The Work', 'Manager'],
+            ['ratingquestion', 'I like the kind of work I do.']
+        ]
         expected_questions_count = 5
+        questions_file_gateway =CsvFileGateway()
 
-        questions_file = SurveyQuestionsCsvGateway(file_path)
+        questions_file = SurveyQuestionFactory()
         questions_list = questions_file.get_questions_list()
         questions_count = len(questions_list)
 
@@ -19,7 +25,7 @@ class TestsSurveyQuestionsCsvGateway(unittest.TestCase):
         expected_question_type = 'ratingquestion'
         expected_question_text = 'I like the kind of work I do.'
 
-        questions_file = SurveyQuestionsCsvGateway(file_path)
+        questions_file = SurveyQuestionFactory(file_path)
         questions_list = questions_file.get_questions_list()
         first_question = questions_list[0]
 

@@ -1,8 +1,8 @@
 class SurveyQuestion(object):
-    def __init__(self, survey_file_row):
-        self.theme = survey_file_row[0]
-        self.type = survey_file_row[1]
-        self.text = survey_file_row[2]
+    def __init__(self, questions_dict):
+        self.theme = questions_dict['theme']
+        self.type = questions_dict['type']
+        self.text = questions_dict['text']
         self.average_response = 0
 
     def set_average_response(self, value):
