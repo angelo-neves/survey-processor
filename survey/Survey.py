@@ -1,5 +1,4 @@
 from enums.SurveyQuestionType import SurveyQuestionType
-from utils.utils import get_average_from_list
 
 
 class Survey(object):
@@ -31,12 +30,23 @@ class Survey(object):
                     answer_is_not_empty = len(answer) > 0
                     if answer_is_not_empty and individual_response.is_submitted():
                         ratings_for_this_question.append(int(answer))
-                average_rating = get_average_from_list(ratings_for_this_question)
+                average_rating = self._get_average_from_list(ratings_for_this_question)
                 self._set_average_rating_for_question(question_number, average_rating)
 
     def _set_average_rating_for_question(self, question_number, average_rating):
         rounded_average = '%.2f' % average_rating
         self.questions[question_number].set_average_response(rounded_average)
+
+    def _get_average_from_list(self, list_of_numbers):
+        total_sum = 0
+        number_count = len(list_of_numbers)
+
+        if number_count == 0:
+            return total_sum
+
+        for number in list_of_numbers:
+            total_sum += number
+        return total_sum / number_count
 
     def get_all_questions(self):
         return self.questions
