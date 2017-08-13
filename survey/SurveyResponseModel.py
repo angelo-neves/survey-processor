@@ -20,8 +20,8 @@ class SurveyResponseModel(object):
             sys.exit('Model error: Expected %.0f answer columns on response file but found %.0f' %
                      (number_of_questions_on_survey_file, number_of_answers_in_response_row))
 
-    def get_answer(self, question_number):
-        return self.answers[question_number]
+    def get_answer(self, question_position):
+        return self.answers[question_position]
 
     def is_submitted(self):
         if len(self.timestamp) > 0:
