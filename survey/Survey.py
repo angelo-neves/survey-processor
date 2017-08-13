@@ -1,5 +1,4 @@
 from enums.SurveyQuestionType import SurveyQuestionType
-from texttable import Texttable
 from utils.utils import get_average_from_list
 
 
@@ -38,15 +37,5 @@ class Survey(object):
     def _set_average_rating_for_question(self, question_number, average_rating):
         self.questions[question_number].set_average_response(average_rating)
 
-    def print_average_question_ratings(self):
-        output_table = Texttable()
-        output_table.add_row(['Survey Question', 'Average Response'])
-        for question in self.questions:
-            if question.type == SurveyQuestionType.RATING.value:
-                output_table.add_row([question.text, question.get_average_response()])
-        print(output_table.draw())
-
-    def print_participation_data(self):
-        print('This survey was sent to %.0f people.' % self.total_employees_surveyed)
-        print('We received %.0f responses.' % self.total_responses)
-        print('Participation was %.2f%%' % self.participation_percentage)
+    def get_all_questions(self):
+        return self.questions

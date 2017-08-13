@@ -2,6 +2,7 @@ import sys
 from survey.Survey import Survey
 from survey.SurveyQuestionFactory import SurveyQuestionFactory
 from survey.SurveyResponseFactory import SurveyResponseFactory
+from survey.SurveyPresenter import SurveyPresenter
 from gateways.CsvFileGateway import CsvFileGateway
 
 if __name__ == "__main__":
@@ -22,7 +23,8 @@ if __name__ == "__main__":
     responses_list = responses_factory.get_responses_list()
 
     survey = Survey(question_list, responses_list)
+    presenter = SurveyPresenter(survey)
 
-    survey.print_participation_data()
-    survey.print_average_question_ratings()
+    presenter.print_rating_questions_averages()
+    presenter.print_participation_data()
 
